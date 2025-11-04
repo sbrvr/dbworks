@@ -6,7 +6,7 @@ Prerequisites -
 
 Set the following in the IcebergRestAPI.java file
 - Databricks Workspace URL
-- Service Principal PAT Token
+- Service Principal PAT Token/ Client ID/ Client Secret
 - UC Catalog Name
 - UC Schema Name
 - UC Table Name
