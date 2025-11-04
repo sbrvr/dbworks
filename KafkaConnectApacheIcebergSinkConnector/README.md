@@ -10,7 +10,8 @@ Once the Connector is configured and created, it starts pushing data from Topic(
 - Kafka Cluster 2.5 or higher
 - Apache Iceberg Sink Connector is installed on Kafka Cluster under Plugins directory and then plugin.path property is set in Kafka Connect worker configuration properties file to point to the plugins directory. Make sure to use HMS supported Iceberg Sink Connector.
 - Access (Roles/Permissions/Network) to Object Store (s3/GCS/ADLS) is configured for Kafka cluster to write data
-- Databricks [Requirements](https://docs.databricks.com/aws/en/external-access/credential-vending#requirements)
+- Databricks External Access to Unity Catalog Enabled - More details [here](https://docs.databricks.com/aws/en/external-access/admin)
+- Databricks Credential Vending [Requirements](https://docs.databricks.com/aws/en/external-access/credential-vending#requirements)
 
 ## Step 1: Create Iceberg Sink Connector Configuration JSON File
 This JSON file will store the Databricks UC information like Catalog,Schema,Table and Kafka like Topics, Regex rules to map topics to UC Iceberg tables.
