@@ -4,6 +4,8 @@ Kafka Connect offers a sink connector called the Apache Iceberg Sink Connector w
 
 The Apache Iceberg sink connector guarantees that each record from Kafka is written to the Iceberg tables exactly once, even during failures or retries. Besides this exactly-once delivery semantics, the Kafka Iceberg connector has a multi-table fan-out capability. This helps you move data from a single Kafka topic to multiple Iceberg tables.
 
+Once the Connector is configured and created, it starts pushing data from Topic(s) to Iceberg Tables in Unity Catalog.
+
 ## Prerequisities:
 - Kafka Cluster 2.5 or higher
 - Apache Iceberg Sink Connector is installed on Kafka Cluster under Plugins directory and then plugin.path property is set in Kafka Connect worker configuration properties file to point to the plugins directory. Make sure to use HMS supported Iceberg Sink Connector.
@@ -92,6 +94,8 @@ The following command can be used to check if the connector is running.
 ```
 curl -s http://<Kafka_cluster_url>/connectors/<new_connector_name>/status 
 ```
+
+This should start pushing data from Kafka Topic(s) to Unity Catalog Table(s).
 
 ## Limitations of Kafka Connect Apache Iceberg Sink Connector:
 
