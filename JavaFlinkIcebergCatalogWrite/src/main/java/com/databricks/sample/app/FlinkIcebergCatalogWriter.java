@@ -23,7 +23,6 @@ public class FlinkIcebergRestCatalogWriter {
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
         env.enableCheckpointing(10000); // Checkpointing is required
 
-   
         String workspaceUrl = "<workspaceurl>";
         String patToken = "<pat_token>";
 
@@ -44,8 +43,6 @@ public class FlinkIcebergRestCatalogWriter {
         //properties.put("credential", "<service_principal_client_id>:<service_principal_client_secret>"); // to be used when OAuth is used
         properties.put("warehouse", ucCatalogName); // warehouse is often optional with UC REST catalog
         properties.put("scope", "all-apis"); // Scope should be defined for the service principal.
-
-
     
         // The hadoopConf can be empty if the catalog doesn't rely on local Hadoop configs
         org.apache.hadoop.conf.Configuration hadoopConf = new org.apache.hadoop.conf.Configuration();
@@ -57,10 +54,8 @@ public class FlinkIcebergRestCatalogWriter {
         TableIdentifier tableIdentifier = TableIdentifier.of(ucSchemaName, tableName);
         // Ensure the table exists or create it using 'catalog.createTable(...)'
 
- 
         DataStream<Row> input = env.addSource(new SampleSourceFunction())
                 .returns(Types.ROW_INFO);
-
   
         // Use TableLoader.fromCatalog to allow the sink tasks to load the table using the serialized CatalogLoader
         TableLoader tableLoader = TableLoader.fromCatalog(catalogLoader, tableIdentifier);
@@ -75,7 +70,6 @@ public class FlinkIcebergRestCatalogWriter {
         FlinkSink.forRow(input, null) // 'null' should be replaced with appropriate TypeInfo or Schema 
             .tableLoader(tableLoader)
             .append();
-
      
         env.execute("Flink Iceberg REST Catalog Write Job");
     }
