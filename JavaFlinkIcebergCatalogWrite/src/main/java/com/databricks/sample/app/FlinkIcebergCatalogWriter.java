@@ -49,12 +49,12 @@ public class FlinkIcebergRestCatalogWriter {
     
         // The hadoopConf can be empty if the catalog doesn't rely on local Hadoop configs
         org.apache.hadoop.conf.Configuration hadoopConf = new org.apache.hadoop.conf.Configuration();
-        CatalogLoader catalogLoader = CatalogLoader.rest(catalogName, hadoopConf, properties);
+        CatalogLoader catalogLoader = CatalogLoader.rest(ucCatalogName, hadoopConf, properties);
         
         // Optional: Load the catalog instance to interact with it programmatically (e.g., create a table)
         Catalog catalog = catalogLoader.loadCatalog();
 
-        TableIdentifier tableIdentifier = TableIdentifier.of("default", "sample_rest_table");
+        TableIdentifier tableIdentifier = TableIdentifier.of(ucSchemaName, tableName);
         // Ensure the table exists or create it using 'catalog.createTable(...)'
 
  
