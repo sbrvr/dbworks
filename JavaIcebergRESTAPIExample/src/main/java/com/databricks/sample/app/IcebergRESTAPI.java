@@ -26,7 +26,7 @@ public class IcebergRestAPI {
 
         // Configure properties for the Iceberg RESTCatalog
         properties.put("uri", String.format("https://%s/api/2.1/unity-catalog/iceberg-rest/", workspaceUrl));
-        properties.put("oauth2-server-uri", String.format("https://%s/oidc/v1/token", workspaceUrl));
+        //properties.put("oauth2-server-uri", String.format("https://%s/oidc/v1/token", workspaceUrl));  // to be used when OAuth is used
         properties.put("type", "iceberg");
         properties.put("catalog-type", "rest");
         properties.put("token", patToken);
