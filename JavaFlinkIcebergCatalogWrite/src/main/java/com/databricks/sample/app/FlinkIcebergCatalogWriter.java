@@ -23,20 +23,30 @@ public class FlinkIcebergRestCatalogWriter {
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
         env.enableCheckpointing(10000); // Checkpointing is required
 
-        // 1. Define REST catalog properties
-        String catalogName = "rest_catalog";
-        Map<String, String> properties = new HashMap<>();
-        // Set the REST catalog URI
-        properties.put("uri", "https://<your-rest-catalog-endpoint>"); 
-        // Add authentication properties (e.g., Databricks token authentication details)
-        // These properties will be specific to your REST catalog implementation.
-        // Example for a simple bearer token (adjust as necessary):
-        properties.put("rest.auth.type", "bearer");
-        properties.put("rest.auth.bearer.token", "<your-bearer-token>");
-        // Specify the warehouse location if needed by the REST service
-        properties.put("warehouse", "s3://your-warehouse-path"); 
+   
+        String workspaceUrl = "<workspaceurl>";
+        String patToken = "<pat_token>";
 
-        // 2. Load the CatalogLoader using CatalogLoader.rest()
+        // Unity Catalog specific configuration
+        String ucCatalogName = "<catalog_name>";
+        String ucSchemaName = "<schema_name>";
+        String tableName = "<table_name>";
+
+        // Configure the REST catalog properties
+        Map<String, String> properties = new HashMap<>();
+
+        // Configure properties for the Iceberg RESTCatalog
+        properties.put("uri", String.format("https://%s/api/2.1/unity-catalog/iceberg-rest/", workspaceUrl));
+        //properties.put("oauth2-server-uri", String.format("https://%s/oidc/v1/token", workspaceUrl));  // to be used when OAuth is used
+        properties.put("type", "iceberg");
+        properties.put("catalog-type", "rest");
+        properties.put("token", patToken); // to be used when OAuth is NOT used
+        //properties.put("credential", "<service_principal_client_id>:<service_principal_client_secret>"); // to be used when OAuth is used
+        properties.put("warehouse", ucCatalogName); // warehouse is often optional with UC REST catalog
+        properties.put("scope", "all-apis"); // Scope should be defined for the service principal.
+
+
+    
         // The hadoopConf can be empty if the catalog doesn't rely on local Hadoop configs
         org.apache.hadoop.conf.Configuration hadoopConf = new org.apache.hadoop.conf.Configuration();
         CatalogLoader catalogLoader = CatalogLoader.rest(catalogName, hadoopConf, properties);
@@ -47,11 +57,11 @@ public class FlinkIcebergRestCatalogWriter {
         TableIdentifier tableIdentifier = TableIdentifier.of("default", "sample_rest_table");
         // Ensure the table exists or create it using 'catalog.createTable(...)'
 
-        // 3. Create a DataStream of sample data
+ 
         DataStream<Row> input = env.addSource(new SampleSourceFunction())
                 .returns(Types.ROW_INFO);
 
-        // 4. Configure the Iceberg sink
+  
         // Use TableLoader.fromCatalog to allow the sink tasks to load the table using the serialized CatalogLoader
         TableLoader tableLoader = TableLoader.fromCatalog(catalogLoader, tableIdentifier);
 
@@ -66,7 +76,7 @@ public class FlinkIcebergRestCatalogWriter {
             .tableLoader(tableLoader)
             .append();
 
-        // 5. Execute the Flink job
+     
         env.execute("Flink Iceberg REST Catalog Write Job");
     }
 
