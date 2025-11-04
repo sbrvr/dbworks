@@ -29,7 +29,8 @@ public class IcebergRestAPI {
         //properties.put("oauth2-server-uri", String.format("https://%s/oidc/v1/token", workspaceUrl));  // to be used when OAuth is used
         properties.put("type", "iceberg");
         properties.put("catalog-type", "rest");
-        properties.put("token", patToken);
+        properties.put("token", patToken); // to be used when OAuth is NOT used
+        //properties.put("credential", "<service_principal_client_id>:<service_principal_client_secret>"); // to be used when OAuth is used
         properties.put("warehouse", ucCatalogName); // warehouse is often optional with UC REST catalog
         properties.put("scope", "all-apis"); // Scope should be defined for the service principal.
 
