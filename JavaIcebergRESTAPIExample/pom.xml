@@ -13,7 +13,6 @@
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <scala.version>2.13.12</scala.version>
-        <spark.version>4.0.0</spark.version>
         <encoding>UTF-8</encoding>
     </properties>
 
